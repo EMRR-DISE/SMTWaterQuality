@@ -1,7 +1,7 @@
 ---
 title: "Daily Turbidity Summaries"
 author: "California Department of Water Resources"
-date: `r format(Sys.time(), "%d %B, %Y")`
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
@@ -12,22 +12,31 @@ library(lubridate)
 library(cder)
 library(sf)
 library(deltamapr)
+library(readxl)
 ```
 
 ## Daily average turbidities
 
 This is a summary of daily average turbidity for several stations in the Delta.
 
-```{r stations}
+```{r stations, echo=FALSE, warning=FALSE, message=FALSE}
+stations = read_excel("../continuous stations.xlsx") %>%
+  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326)
+ggplot()+
+  geom_sf(data = WW_Delta, fill = "lightblue", color = "grey")+
+  geom_sf(data = stations)+
+  geom_sf_text(data = stations, aes(label = StationCode), nudge_x = .01, nudge_y = .01, size = 2)+
+  coord_sf(ylim = c(37.6, 38.1), xlim = c(-121.8, -121.2))+
+  theme_bw()
 
 ```
 
 ## Here is the average turbidity for the past 7 days
 
 
-```{r pressure, echo=FALSE, warning=FALSE, message=FALSE}
-
-turb = cdec_query(c("BDL", "RVB"), 27, duration = "E",
+```{r turbidity, echo=FALSE, warning=FALSE, message=FALSE}
+load("../TurbToSecchi.RData")
+turb = cdec_query(stations$StationCode, c(27,221), duration = "E",
                   start.date = today()-7, end.date = today())
 
 turb2 = mutate(turb, Date = date(DateTime)) %>%
@@ -36,7 +45,19 @@ turb2 = mutate(turb, Date = date(DateTime)) %>%
 
 ggplot(turb2, aes(x = Date, y = Turbidity)) + geom_line()+geom_point()+
   facet_wrap(~StationID)+
-  geom_text(aes(label = round(Turbidity, 1)), nudge_y = 5)
+  geom_text(aes(label = round(Turbidity)), nudge_y = 10, size = 3)+
+  ylab("Turbidity (NTU)")
+
+```
+
+Here it is converted to secchi depth
+
+```{r secchi, echo=FALSE, warning=FALSE, message=FALSE}
+
+ggplot(turb2, aes(x = Date, y = TurbToSecchi(Turbidity))) + geom_line()+geom_point()+
+  facet_wrap(~StationID)+
+  geom_text(aes(label = round(TurbToSecchi(Turbidity))), nudge_y = 10, size = 3)+
+  ylab("Estimated Secchi Depth, CM")
 
 ```
 
