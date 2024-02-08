@@ -1,0 +1,42 @@
+---
+title: "Daily Turbidity Summaries"
+author: "Rosie"
+date: "2024-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(cder)
+library(sf)
+library(deltamapr)
+```
+
+## Daily average turbidities
+
+This is a summary of daily average turbidity for several stations in the Delta.
+
+```{r stations}
+
+```
+
+## Here is the average turbidity for the past 7 days
+
+
+```{r pressure, echo=FALSE, warning=FALSE}
+
+turb = cdec_query(c("BDL", "RVB"), 27, duration = "E",
+                  start.date = today()-7, end.date = today())
+
+turb2 = mutate(turb, Date = date(DateTime)) %>%
+  group_by(Date, StationID) %>%
+  summarize(Turbidity = mean(Value, na.rm =T))
+
+ggplot(turb2, aes(x = Date, y = Turbidity)) + geom_line()+geom_point()+
+  facet_wrap(~StationID)+
+  geom_text(aes(label = round(Turbidity, 1)), nudge_y = 5)
+
+```
+
