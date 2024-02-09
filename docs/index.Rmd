@@ -19,6 +19,8 @@ library(readxl)
 
 This is a summary of daily average turbidity for several stations in the Delta.
 
+If this line shows up, the automatic task worked right. 
+
 ```{r stations, echo=FALSE, warning=FALSE, message=FALSE}
 stations = read_excel("../continuous stations.xlsx") %>%
   st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326)
@@ -82,13 +84,13 @@ ggplot(turb2, aes(x = Date, y = TurbToSecchi(Turbidity))) + geom_line()+geom_poi
 
 Turbidity and secchi depth have a pretty good correlation when both are log-transformed. However, secchi depth is subject to some degree of variability with observer, weather, time of day, waves, and whether the observer has had their coffee. Turbidity, as measured by a sonde, is also subject to some variability depending on when the sonde was last calibrated.
 
-To convert between turbidity and secchi depth for the purpose of this document, we used data from an integrated dataset of discrete water quality (Bashevkin et al, 2013, secchi depth and turbidity collected concurrently) collected by IEP surveys from 2000-2022 for the South Delta (area shown in map above). Data is available on GitHub here: [discretewq](https://github.com/InteragencyEcologicalProgram/discretewq)
+To convert between turbidity and secchi depth for the purpose of this document, we used secchi depth data from an integrated dataset of discrete water quality (Bashevkin et al, 2013), collected by IEP surveys from 2010-2022 for the South Delta (area shown in map above). The secchi depths were matched to the nearest continuous station's daily average turbidity. Data is available on GitHub here: [discretewq](https://github.com/InteragencyEcologicalProgram/discretewq)
 
 We then log-transformed secchi depth and turbidity and conducted a linear regression.
 
 ```{r, echo = FALSE}
 
-ggplot(WQ2, aes(x = log(Secchi), y = log(TurbidityNTU))) + geom_point()+
+ggplot(WQx2a, aes(x = log(Secchi), y = log(TurbidityNTU))) + geom_point()+
   ylab("Log of Turbidity")+ xlab("Log of Secchi Depth") + geom_smooth(method = "lm")
 
 
@@ -98,13 +100,13 @@ We used this regression to estimate the secchi depth given the turbidity from th
 
 Here's the formula:
 
-Secchi = exp(-0.31*log(Turbidity) +5.3)
+Secchi = exp(-0.44*log(Turbidity) +5.4)
 
 
 Here is the model output:
 ```{r}
 
-summary(convert)
+summary(convert3)
 ```
 
 For all the code behind this analysis, please see: 
