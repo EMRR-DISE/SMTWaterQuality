@@ -1,6 +1,6 @@
 
 #!/bin/sh
-cd C:/Users/rhartman/OneDrive - California Department of Water Resources/smelt cages/SMTWaterQuality
+cd "OneDrive - California Department of Water Resources/smelt cages/SMTWaterQuality"
 git add --all
 timestamp() {
   date +"at %H:%M:%S on %d/%m/%Y"
