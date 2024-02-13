@@ -1,7 +1,8 @@
 #script to knit the document
-
+library(rmarkdown)
 library(knitr)
-knit("docs/index.Rmd", output = "docs/index.html")
+setwd("C:/Users/rhartman/OneDrive - California Department of Water Resources/smelt cages/SMTWaterQuality/docs")
+render("index.Rmd", output_format = "html_document")
 
 
 # Git add.

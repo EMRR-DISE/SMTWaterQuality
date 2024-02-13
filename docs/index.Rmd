@@ -1,12 +1,13 @@
 ---
 title: "Daily Turbidity Summaries"
 author: "California Department of Water Resources"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+opts_knit$set(root.dir = "C:/Users/rhartman/OneDrive - California Department of Water Resources/smelt cages/SMTWaterQuality/docs")
 library(tidyverse)
 library(lubridate)
 library(cder)
