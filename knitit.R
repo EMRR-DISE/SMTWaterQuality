@@ -2,6 +2,7 @@
 library(rmarkdown)
 library(knitr)
 setwd("C:/Users/rhartman/OneDrive - California Department of Water Resources/smelt cages/SMTWaterQuality/docs")
+Sys.setenv(RSTUDIO_PANDOC="C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools")
 render("index.Rmd", output_format = "html_document")
 
 
