@@ -8,3 +8,4 @@ timestamp() {
 git commit -m "Regular auto-commit $(timestamp)"
 git push origin main
 
+shell(git add --all)
