@@ -1,5 +1,5 @@
 
-#!/bin/sh
+!/bin/sh
 cd "OneDrive - California Department of Water Resources/smelt cages/SMTWaterQuality"
 git add --all
 timestamp() {
