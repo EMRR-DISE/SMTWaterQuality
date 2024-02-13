@@ -20,7 +20,6 @@ library(readxl)
 
 This is a summary of daily average turbidity for several stations in the Delta.
 
-test again2
 
 ```{r stations, echo=FALSE, warning=FALSE, message=FALSE}
 stations = read_excel("../continuous stations.xlsx") %>%
@@ -60,6 +59,7 @@ ggplot(turb3, aes(x = Date, y = TurbToSecchi(Turbidity))) + geom_line()+geom_poi
   ylab("Estimated Secchi Depth, CM")
 
 ```
+
 Here are the daily averages from the individual stations. 
 
 ```{r turbidityall, echo=FALSE, warning=FALSE, message=FALSE}

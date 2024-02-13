@@ -33,5 +33,5 @@ gitpush <- function(dir = getwd()){
   shell(cmd)
 }
 gitadd()
-gitcommit()
+gitcommit(msg = paste("Auto update", Sys.time()))
 gitpush()
