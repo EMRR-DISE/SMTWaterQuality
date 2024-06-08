@@ -1,8 +1,8 @@
 name: Daily Update
 run-name: ${{ date }} update of turbidity 🚀
-on: 
-  schedule:
-  - cron: "0 0 * * *"
+on: workflow_dispatch
+  #schedule:
+ # - cron: "0 0 * * *"
 
 jobs:
   import-data:
