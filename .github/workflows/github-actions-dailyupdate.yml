@@ -1,5 +1,5 @@
 name: Daily Update
-run-name: ${{ date | date('MMMM Do') }} update of turbidity 🚀
+run-name: ${{ date }} update of turbidity 🚀
 on: 
   schedule:
   - cron: "0 0 * * *"
