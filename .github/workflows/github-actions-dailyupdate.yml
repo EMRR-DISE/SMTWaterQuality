@@ -19,7 +19,7 @@ jobs:
             any::lubridate
             any::cder
             any::sf
-            any::deltamapr
+            github::https://github.com/InteragencyEcologicalProgram/deltamapr
             any::readxl
 
       - name: Check out repository
