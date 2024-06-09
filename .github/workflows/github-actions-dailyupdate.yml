@@ -1,5 +1,5 @@
 name: Daily Update
-run-name: {{ date }} update of turbidity 🚀
+run-name: update of turbidity 🚀
 on: workflow_dispatch
   #schedule:
  # - cron: "0 0 * * *"
