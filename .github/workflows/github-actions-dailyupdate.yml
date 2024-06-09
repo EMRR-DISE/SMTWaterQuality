@@ -32,10 +32,10 @@ jobs:
         uses: lc5415/rmarkdown-action@v1
         with:
           input_file: docs/index.Rmd
-	        output_format: html
-         
-     - name: Commit results
-       run: |
+          output_format: html
+	  
+      - name: Commit results
+        run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add index.Rmd
