@@ -13,8 +13,7 @@ library(tidyverse)
 library(lubridate)
 library(cder)
 library(sf)
-library(deltamapr)
-library(readxl)
+load("GISdata.RData")
 ```
 
 ## Daily average turbidities
@@ -23,8 +22,7 @@ This is a summary of daily average turbidity for several stations in the Delta.
 
 
 ```{r stations, echo=FALSE, warning=FALSE, message=FALSE}
-stations = read_excel("../continuous stations.xlsx") %>%
-  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326)
+
 ggplot()+
   geom_sf(data = WW_Delta, fill = "lightblue", color = "grey")+
   geom_sf(data = stations)+
