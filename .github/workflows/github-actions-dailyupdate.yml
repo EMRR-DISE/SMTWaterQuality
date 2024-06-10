@@ -1,8 +1,8 @@
 name: Daily Update
-run-name: ${{ date | date('MMMM Do') }} update of turbidity 🚀
-on: 
-  schedule:
-  - cron: "0 0 * * *"
+run-name: update of turbidity 🚀
+on: workflow_dispatch
+  #schedule:
+ # - cron: "0 0 * * *"
 
 jobs:
   import-data:
@@ -19,15 +19,20 @@ jobs:
             any::lubridate
             any::cder
             any::sf
-            any::deltamapr
+            github::https://github.com/InteragencyEcologicalProgram/deltamapr
             any::readxl
 
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Import data
-        run: Rscript -e 'source("index.Rmd")'
-
+        run: Rscript -e 'source("docs/index.Rmd")'
+        
+      - name: Render document
+        uses: lc5415/rmarkdown-action@v1
+        with:
+          input_file: docs/index.Rmd
+          output_format: html_document
       - name: Commit results
         run: |
           git config --local user.email "actions@github.com"
@@ -35,3 +40,4 @@ jobs:
           git add index.Rmd
           git commit -m 'Data updated' || echo "No changes to commit"
           git push origin || echo "No changes to commit"
+
