@@ -54,11 +54,11 @@ turb3 = turb2 %>%
 #plot it
 ggplot(turb3, aes(x = Date, y = Turbidity))+ geom_line()+geom_point()+
   geom_text(aes(label = round(Turbidity)), nudge_y = 1, size = 5)+
-  ylab("Turbidity (NTU)")
+  ylab("Turbidity (NTU)")+ theme_bw()
 
 ggplot(turb3, aes(x = Date, y = TurbToSecchi(Turbidity))) + geom_line()+geom_point()+
   geom_text(aes(label = round(TurbToSecchi(Turbidity))), nudge_y = 5, size = 5)+
-  ylab("Estimated Secchi Depth, CM")
+  ylab("Estimated Secchi Depth, CM")+ theme_bw()
 
 ```
 
@@ -68,7 +68,7 @@ Here are the daily averages from the individual stations.
 ggplot(turb2, aes(x = Date, y = Turbidity)) + geom_line()+geom_point()+
   facet_wrap(~StationID)+
   geom_text(aes(label = round(Turbidity)), nudge_y = 1, size = 3)+
-  ylab("Turbidity (NTU)")
+  ylab("Turbidity (NTU)")+ theme_bw()
 
 ```
 
@@ -79,7 +79,7 @@ Here it is converted to secchi depth
 ggplot(turb2, aes(x = Date, y = TurbToSecchi(Turbidity))) + geom_line()+geom_point()+
   facet_wrap(~StationID)+
   geom_text(aes(label = round(TurbToSecchi(Turbidity))), nudge_y = 5, size = 3)+
-  ylab("Estimated Secchi Depth, CM")
+  ylab("Estimated Secchi Depth, CM")+theme_bw()
 
 ```
 
@@ -93,8 +93,8 @@ We then log-transformed secchi depth and turbidity and conducted a linear regres
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 
-ggplot(WQx2a, aes(x = log(Secchi), y = log(TurbidityNTU))) + geom_point()+
-  ylab("Log of Turbidity")+ xlab("Log of Secchi Depth") + geom_smooth(method = "lm")
+ggplot(filter(WQx2a, ContStation != "OBI", ContStation != "FRK"), aes(x = log(Secchi), y = log(TurbiditySonde))) + geom_point()+
+  ylab("Log of Turbidity")+ xlab("Log of Secchi Depth") + geom_smooth(method = "lm")+ theme_bw()
 
 
 ```
@@ -103,7 +103,7 @@ We used this regression to estimate the secchi depth given the turbidity from th
 
 Here's the formula:
 
-Secchi = exp(-0.44*log(Turbidity) +5.4)
+Secchi = exp(`summary(convert3)$coefficients[2,1]`*log(Turbidity) +`summary(convert3)$coefficients[1,1]`)
 
 
 Here is the model output:
@@ -111,6 +111,16 @@ Here is the model output:
 
 summary(convert3)
 ```
+When we use this formula to predict secchi depth, we see that it fits reasonably well (r2 of `summary(convert3)$r.squared`) for secchi depths of between 50 and 200, but does less well in clear water and very turbid water due to the log-log relationship between turbidity and secchi. It also does not predict secchi depth in Franks Tract or near OBI very well.
+
+```{r}
+ggplot(WQx2a, aes(x = Secchi, y = SecchiPredicted))+ geom_point(aes(color = ContStation))+ 
+  scale_color_manual(values = mypal, name = "Continuous\nStation")+
+  geom_abline(slope =1, intercept =0, size =1, linetype = 2)+
+  theme_bw()+
+  annotate("text", x = 300, y = 310, angle = 30, label = "1:1 line")
+```
+
 
 For all the code behind this analysis, please see: 
 
