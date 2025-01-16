@@ -103,7 +103,7 @@ We used this regression to estimate the secchi depth given the turbidity from th
 
 Here's the formula:
 
-Secchi = exp(`summary(convert3)$coefficients[2,1]`*log(Turbidity) +`summary(convert3)$coefficients[1,1]`)
+Secchi = exp(`r round(summary(convert3)$coefficients[2,1], 2)`*log(Turbidity) +`r round(summary(convert3)$coefficients[1,1], 2)`)
 
 
 Here is the model output:
@@ -111,9 +111,9 @@ Here is the model output:
 
 summary(convert3)
 ```
-When we use this formula to predict secchi depth, we see that it fits reasonably well (r2 of `summary(convert3)$r.squared`) for secchi depths of between 50 and 200, but does less well in clear water and very turbid water due to the log-log relationship between turbidity and secchi. It also does not predict secchi depth in Franks Tract or near OBI very well.
+When we use this formula to predict secchi depth, we see that it fits reasonably well (r2 of `r round(summary(convert3)$r.squared,2)`) for secchi depths of between 50 and 200, but does less well in clear water and very turbid water due to the log-log relationship between turbidity and secchi. It also does not predict secchi depth in Franks Tract or near OBI very well.
 
-```{r}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 ggplot(WQx2a, aes(x = Secchi, y = SecchiPredicted))+ geom_point(aes(color = ContStation))+ 
   scale_color_manual(values = mypal, name = "Continuous\nStation")+
   geom_abline(slope =1, intercept =0, size =1, linetype = 2)+
