@@ -9,7 +9,12 @@ library(mgcv)
 
 
 stations = read_excel("continuous stations.xlsx") %>%
-  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326)
+  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
+  filter(!StationCode %in% c("MDM", "OH4", "SJJ") ) 
+
+save(stations, WW_Delta, file = "docs/GISdata.RData")
+load("docs/GISdata.RData")
+
 
 WQ = wq(Sources = c("20mm", "Baystudy", "DJFMP", "DOP", "EDSM", "EMP", "FMWT", 
                     "NCRO", "SDO", "SKT", "SLS", "STN", "Suisun",
@@ -84,7 +89,7 @@ WQx2 = full_join(WQ2x, select(stations2, -Latitude, -Longitude))
 
 library(cder)
 contwaterquality = cdec_query(unique(stations2$ContStation), c(27,221), duration = "E",
-                                     start.date = as.Date("2010-01-01"), end.date = today())
+                                     start.date = as.Date("2015-01-01"), end.date = today())
 
 contwq = mutate(contwaterquality, Date = date(ObsDate)) %>%
   filter(Value >0) %>%
