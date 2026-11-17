@@ -10,9 +10,11 @@ library(mgcv)
 
 stations = read_excel("continuous stations.xlsx") %>%
   st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>%
-  filter(!StationCode %in% c("MDM", "OH4", "SJJ") ) 
+  filter(!StationCode %in% c("MDM", "SJJ") ) 
 
 save(stations, WW_Delta, file = "docs/GISdata.RData")
+
+save(stations, WW_Delta, file = "GISdata.RData")
 load("docs/GISdata.RData")
 
 
