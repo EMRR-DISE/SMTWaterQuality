@@ -118,6 +118,8 @@ summary(convert3)
 When we use this formula to predict secchi depth, we see that it fits reasonably well (r2 of `r round(summary(convert3)$r.squared,2)`) for secchi depths of between 50 and 200, but does less well in clear water and very turbid water due to the log-log relationship between turbidity and secchi. It also does not predict secchi depth in Franks Tract or near OBI very well.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
+WQx2a = mutate(WQx2a, SecchiPredicted = TurbToSecchi(TurbiditySonde))
+
 ggplot(WQx2a, aes(x = Secchi, y = SecchiPredicted))+ geom_point(aes(color = ContStation))+ 
   scale_color_manual(values = mypal, name = "Continuous\nStation")+
   geom_abline(slope =1, intercept =0, size =1, linetype = 2)+
