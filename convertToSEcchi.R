@@ -125,12 +125,13 @@ TurbToSecchi = function(Turbidity) {
 
 TurbToSecchi(5)
 mypal = c("red", "blue", "springgreen3", "darkorange", "purple2", "darkred", "tan", "skyblue", "yellow","salmon","black")
-save(convert3, TurbToSecchi, mypal, WQx2a,  file = "docs/TurbToSecchi.RData")
+
 
 #what is the actual versus predicted secchi?
 WQx2a = mutate(WQx2a, SecchiPredicted = TurbToSecchi(TurbiditySonde)) %>%
   filter(SecchiPredicted <600)
 
+save(convert3, TurbToSecchi, mypal, WQx2a,  file = "docs/TurbToSecchi.RData")
 ggplot(WQx2a, aes(x = Secchi, y = SecchiPredicted))+ geom_point(aes(color = ContStation))+ 
   scale_color_manual(values = mypal, name = "Continuous\nStation")+
   geom_abline(slope =1, intercept =0, size =1, linetype = 2)+
